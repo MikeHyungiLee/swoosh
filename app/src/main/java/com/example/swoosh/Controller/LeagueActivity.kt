@@ -2,6 +2,7 @@ package com.example.swoosh.Controller
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.widget.Toast
 import com.example.swoosh.Model.Player
@@ -14,9 +15,23 @@ class LeagueActivity : BaseActivity() {
 //    var selectedLeague = ""
     var player = Player("", "")
 
+    // When rotating the screen, Parcelable data will be saved again.
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(EXTRA_PLAYER, player)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_league)
+    }
+    // When activity is re-created, onRestoreInstanceState method will get the parcelable data.
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        if(savedInstanceState != null){
+            player = savedInstanceState.getParcelable(EXTRA_PLAYER)!!
+        }
+
     }
 
     fun onMensClicked(view: View){
